@@ -22,19 +22,30 @@ class Rover
   end
 
   def move_forward
-    @position = [position, ORIENTATION_MAP[orientation]].transpose.map {|x| x.reduce(:+)}
+    @position = position_with_orientation.map {|x| x.reduce(:+)}
   end
 
   def move_backwards
-    @position = [position, ORIENTATION_MAP[orientation]].transpose.map {|x| x.reduce(:-)}
+    @position = position_with_orientation.map {|x| x.reduce(:-)}
   end
 
   def turn_right
-    @orientation = ORIENTATIONS[(ORIENTATIONS.index(orientation) + 1) % ORIENTATIONS.size]
+    @orientation = spin(:right)
   end
 
   def turn_left
-    @orientation = ORIENTATIONS[(ORIENTATIONS.index(orientation) - 1) % ORIENTATIONS.size]
+    @orientation = spin(:left)
+  end
+
+  private
+
+  def spin(direction)
+    index_change = direction == :right ? 1 : -1
+    ORIENTATIONS[(ORIENTATIONS.index(orientation) + index_change) % ORIENTATIONS.size]
+  end
+
+  def position_with_orientation
+    [position, ORIENTATION_MAP[orientation]].transpose
   end
 
 end
