@@ -5,12 +5,12 @@ describe Rover do
   subject(:rover) { described_class.new }
 
   context 'at initialization' do
-    it 'has no position' do
+    it 'has position 0,0' do
       expect(rover.position).to be_an_instance_of(Array)
-      expect(rover.position).to be_empty
+      expect(rover.position).to eq([0,0])
     end
-    it 'has no orientation' do
-      expect(rover.orientation).to be_nil
+    it 'has orientation N' do
+      expect(rover.orientation).to eq(:N)
     end
   end
 

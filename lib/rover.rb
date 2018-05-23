@@ -12,8 +12,8 @@ class Rover
   attr_reader :position, :orientation
 
   def initialize
-    @position = []
-    @orientation = nil
+    @position = [0,0]
+    @orientation = :N
   end
 
   def deploy(position, orientation)
