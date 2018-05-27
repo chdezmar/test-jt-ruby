@@ -1,6 +1,9 @@
+require_relative 'rover'
+require_relative 'grid'
+
 class RoverController
 
-  attr_reader :commands, :grid, :rover
+  attr_reader :grid, :rover
 
   def initialize(rover = Rover.new, grid = Grid.new)
     @rover = rover
@@ -15,6 +18,7 @@ class RoverController
       when :F, :B then move_rover(command)
       end
     end
+    rover.position
   end
 
   private
@@ -32,11 +36,11 @@ class RoverController
   # Our special sphere overlaps x and y edges on their max values
   # ie. [10,10] becomes [0,0]
   def recalculate_coordinates_for_sphere
-    if rover.position[0] >= grid.width || rover.position[0] < 0
-      rover.position[0] = (rover.position[0] % grid.width).abs
+    if rover.position[0] >= grid.x || rover.position[0] < 0
+      rover.position[0] = (rover.position[0] % grid.x).abs
     end
-    if rover.position[1] >= grid.height || rover.position[1] < 0
-      rover.position[1] = (rover.position[1] % grid.height).abs
+    if rover.position[1] >= grid.y || rover.position[1] < 0
+      rover.position[1] = (rover.position[1] % grid.y).abs
     end
   end
 end

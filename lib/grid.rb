@@ -1,10 +1,10 @@
 class Grid
 
-  attr_reader :height, :width, :obstacles
+  attr_reader :x, :y, :obstacles
 
-  def initialize(height = 10, width = 10, options = {})
-    @height = height
-    @width = width
+  def initialize(x = 10, y = 10, options = {})
+    @x = x
+    @y = y
     @obstacles = options[:obstacles] || []
   end
 end
