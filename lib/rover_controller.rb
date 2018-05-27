@@ -12,37 +12,26 @@ class RoverController
       case command
       when :R then rover.turn_right
       when :L then rover.turn_left
-      when :F then move_forward
-      when :B then move_backwards
+      when :F, :B then move_rover(command)
       end
     end
   end
 
   private
 
-  def move_forward
-    next_position = rover.forward_position
-    if grid.obstacles.include?(next_position)
-      raise "Obstacle detected, movement aborted!! Rover position is #{rover.position}"
+  def move_rover(direction)
+    direction = direction == :F ? 'forward' : 'backwards'
+    if grid.obstacles.include?(rover.send("#{direction}_position"))
+      raise StandardError, "ATTENTION: Obstacle detected, move cancelled. Rover position is #{rover.position}"
     else
-      rover.move_forward
+      rover.send("move_#{direction}")
     end
     recalculate_coordinates_for_sphere
   end
 
-  def move_backwards
-    next_position = rover.backwards_position
-    if grid.obstacles.include?(next_position)
-      raise "Obstacle detected, movement aborted!! Rover position is #{rover.position}"
-    else
-      rover.move_backwards
-    end
-    recalculate_coordinates_for_sphere
-  end
-
+  # Our special sphere overlaps x and y edges on their max values
+  # ie. [10,10] becomes [0,0]
   def recalculate_coordinates_for_sphere
-    # Our special sphere overlaps x and y edges on their max values
-    # ie. [10,10] becomes [0,0]
     if rover.position[0] >= grid.width || rover.position[0] < 0
       rover.position[0] = (rover.position[0] % grid.width).abs
     end

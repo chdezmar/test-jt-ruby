@@ -32,8 +32,12 @@ describe RoverController do
     context 'with obstacles' do
       let(:rover_controller) { described_class.new(Rover.new, Grid.new(10, 10, obstacles: [[0,4], [0,5]]))}
       it 'moves the rover to the last position before the obstacle' do
-        expect { rover_controller.move([:F, :F, :F, :F, :F]) }.to raise_error
+        expect { rover_controller.move([:F, :F, :F, :F, :F]) }.to raise_error(StandardError, "ATTENTION: Obstacle detected, move cancelled. Rover position is [0, 3]")
         expect(rover_controller.rover.position).to eq([0,3])
+      end
+      it 'moves the rover to the desired position if no obstacles are detected' do
+        expect { rover_controller.move([:F, :F, :R, :F, :F]) }.not_to raise_error
+        expect(rover_controller.rover.position).to eq([2, 2])
       end
     end
   end
