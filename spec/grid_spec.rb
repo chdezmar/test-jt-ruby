@@ -11,8 +11,12 @@ describe Grid do
     expect(grid.width).to eq(10)
   end
   it 'can be set with a custom height and width' do
-    rover = described_class.new(100,100)
-    expect(rover.height).to eq(100)
-    expect(rover.width).to eq(100)
+    grid = described_class.new(100,100)
+    expect(grid.height).to eq(100)
+    expect(grid.width).to eq(100)
+  end
+  it 'can hold a set of obstacles' do
+    grid = described_class.new(100,100, obstacles: [[0,3], [1,2]])
+    expect(grid.obstacles).to eq([[0,3], [1,2]])
   end
 end

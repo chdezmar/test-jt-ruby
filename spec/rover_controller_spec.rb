@@ -14,27 +14,27 @@ describe RoverController do
   end
 
   describe '#move' do
-    before(:each) do
-      @commands = [:R, :F, :F, :L, :F, :F, :B]
+    context 'no obstacles' do
+      it 'moves the rover to its desired position' do
+        rover_controller.move([:R, :F, :F, :L, :F, :F, :B])
+        expect(rover_controller.rover.position).to eq([2,1])
+        rover_controller.move([:B,:B])
+        expect(rover_controller.rover.position).to eq([2,9])
+      end
+      it 'moves the rover to its desired position if grid is round' do
+        rover_controller.move([:R, :F, :F, :F, :F, :F, :F, :F, :F, :F, :F])
+        expect(rover_controller.rover.position).to eq([0,0])
+        rover_controller.move([:F])
+        expect(rover_controller.rover.position).to eq([1,0])
+      end
     end
 
-    it 'receives and keeps an array of commands' do
-      rover_controller.move(@commands)
-      expect(rover_controller.commands).to be_an_instance_of(Array)
-    end
-
-    # it 'deploys the rover [0,0] position' do
-    #   expect(rover_controller.rover.position).to eq([0,0])
-    # end
-
-    it 'moves the rover to its desired position' do
-      rover_controller.move(@commands)
-      expect(rover_controller.rover.position).to eq([2,1])
-    end
-    it 'moves the rover to its desired position if world is round' do
-      rover_controller.move([:R, :F, :F, :F, :F, :F, :F, :F, :F, :F, :F, :F])
-      puts rover_controller.rover.position
-      expect(rover_controller.rover.position).to eq([1,0])
+    context 'with obstacles' do
+      let(:rover_controller) { described_class.new(Rover.new, Grid.new(10, 10, obstacles: [[0,4], [0,5]]))}
+      it 'moves the rover to the last position before the obstacle' do
+        expect { rover_controller.move([:F, :F, :F, :F, :F]) }.to raise_error
+        expect(rover_controller.rover.position).to eq([0,3])
+      end
     end
   end
 end

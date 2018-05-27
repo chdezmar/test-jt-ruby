@@ -22,6 +22,21 @@ describe Rover do
     end
   end
 
+  context 'Getting next position' do
+    describe '#forward_position' do
+      it 'returns next forward position' do
+        rover.deploy([0,0], :N)
+        expect(rover.forward_position).to eq([0,1])
+      end
+    end
+    describe '#backwards_position' do
+      it 'returns next backwards postition' do
+        rover.deploy([2,1], :N)
+        expect(rover.backwards_position).to eq([2,0])
+      end
+    end
+  end
+
   context 'Moving' do
     describe '#move_forward' do
       it 'moves forward when orientation is N' do

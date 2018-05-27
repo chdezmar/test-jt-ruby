@@ -22,11 +22,19 @@ class Rover
   end
 
   def move_forward
-    @position = position_with_orientation.map {|x| x.reduce(:+)}
+    @position = forward_position
   end
 
   def move_backwards
-    @position = position_with_orientation.map {|x| x.reduce(:-)}
+    @position = backwards_position
+  end
+
+  def forward_position
+    position_with_orientation.map {|x| x.reduce(:+)}
+  end
+
+  def backwards_position
+    position_with_orientation.map {|x| x.reduce(:-)}
   end
 
   def turn_right
